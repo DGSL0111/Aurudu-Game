@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Avurudu Memory Game</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fffde7;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #f57f17;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(4, 70px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+
+    .card {
+      width: 70px;
+      height: 70px;
+      background-color: #ffd54f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .card.flipped {
+      background-color: #ffb300;
+    }
+
+    #back {
+      margin-top: 20px;
+      background-color: #f57f17;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🪔 Avurudu Memory Match</h1>
+  <div class="grid" id="grid"></div>
+  <button id="back" onclick="window.location.href='index.html'">Main Menu</button>
+  <footer>Created by: <strong>Didula Piyumath</strong></footer>
+
+  <script>
+    const symbols = ["🔆", "🪔", "🎉", "🥥", "🍚", "🎁", "🌺", "🧧"];
+    const cards = [...symbols, ...symbols];
+    let firstCard = null;
+    let lockBoard = false;
+
+    // Shuffle cards
+    cards.sort(() => 0.5 - Math.random());
+
+    const grid = document.getElementById("grid");
+
+    cards.forEach((symbol, index) => {
+      const card = document.createElement("div");
+      card.classList.add("card");
+      card.dataset.symbol = symbol;
+      card.dataset.index = index;
+      card.innerText = "";
+      card.addEventListener("click", flipCard);
+      grid.appendChild(card);
+    });
+
+    function flipCard() {
+      if (lockBoard) return;
+      if (this.classList.contains("flipped")) return;
+
+      this.innerText = this.dataset.symbol;
+      this.classList.add("flipped");
+
+      if (!firstCard) {
+        firstCard = this;
+        return;
+      }
+
+      if (firstCard.dataset.symbol === this.dataset.symbol) {
+        firstCard = null;
+      } else {
+        lockBoard = true;
+        setTimeout(() => {
+          this.classList.remove("flipped");
+          this.innerText = "";
+          firstCard.classList.remove("flipped");
+          firstCard.innerText = "";
+          firstCard = null;
+          lockBoard = false;
+        }, 800);
+      }
+    }
+  </script>
+</body>
+</html>

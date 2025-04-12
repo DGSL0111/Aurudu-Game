@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kana Mutti</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff8e1;
+      text-align: center;
+      padding: 30px;
+    }
+
+    h1 {
+      color: #e65100;
+      font-size: 2em;
+      margin-bottom: 20px;
+    }
+
+    .pots {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .pot {
+      width: 100px;
+      height: 100px;
+      background-color: #a1887f;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .pot:hover {
+      transform: scale(1.1);
+    }
+
+    #message {
+      font-size: 18px;
+      color: #4e342e;
+      margin-top: 20px;
+    }
+
+    #back {
+      margin-top: 30px;
+      background-color: #e65100;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🥚 Kana Mutti</h1>
+  <div class="pots" id="pots"></div>
+  <div id="message"></div>
+  <button id="back" onclick="window.location.href='index.html'">Main Menu</button>
+  <footer>Created by: <strong>Didula Piyumath</strong></footer>
+
+  <script>
+    const potsContainer = document.getElementById('pots');
+    const message = document.getElementById('message');
+
+    let correctPot = Math.floor(Math.random() * 3); // 0, 1, or 2
+
+    function setupPots() {
+      potsContainer.innerHTML = '';
+      message.innerText = '';
+
+      for (let i = 0; i < 3; i++) {
+        const pot = document.createElement('div');
+        pot.classList.add('pot');
+        pot.innerText = '🥥';
+        pot.onclick = () => checkPot(i, pot);
+        potsContainer.appendChild(pot);
+      }
+    }
+
+    function checkPot(index, potElement) {
+      if (index === correctPot) {
+        potElement.innerText = '🎁';
+        message.innerText = 'You broke the right pot! 🎉';
+      } else {
+        potElement.innerText = '💥';
+        message.innerText = 'Oops! Wrong one. Try again!';
+      }
+
+      // Disable further clicks
+      const allPots = document.querySelectorAll('.pot');
+      allPots.forEach(p => p.onclick = null);
+    }
+
+    setupPots();
+  </script>
+
+</body>
+</html>

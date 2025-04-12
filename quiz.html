@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Avurudu Quiz</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #fce4ec;
+      color: #3e2723;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      text-align: center;
+    }
+
+    .quiz-container {
+      max-width: 500px;
+      margin: 20px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button {
+      padding: 15px;
+      font-size: 18px;
+      background-color: #ff4081;
+      border: 2px solid #ff1744;
+      border-radius: 25px;
+      color: white;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+
+    button:hover {
+      background-color: #ff1744;
+    }
+
+    .question {
+      font-size: 24px;
+    }
+
+    .options {
+      margin-top: 15px;
+    }
+
+    .options button {
+      width: 100%;
+      margin: 5px;
+    }
+
+    #score {
+      font-size: 20px;
+      color: #4caf50;
+      margin-top: 20px;
+    }
+
+    #footer {
+      font-size: 16px;
+      color: #888;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="quiz-container" id="quiz-container">
+    <!-- Quiz will load here -->
+  </div>
+
+  <div id="footer">
+    Created by: <strong>Didula Piyumath</strong>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        question: "Which flower is commonly used in Avurudu rituals?",
+        options: ["Lotus", "Red Flower", "Wild Flower"],
+        correct: "Lotus"
+      },
+      {
+        question: "What traditional sweet is commonly eaten during Avurudu?",
+        options: ["Kavum", "Mango", "Coffee"],
+        correct: "Kavum"
+      },
+      {
+        question: "What is the traditional name for the 'New Year' ceremony?",
+        options: ["Past Ceremony", "New Ceremony", "Ancient Ceremony"],
+        correct: "New Ceremony"
+      },
+      {
+        question: "Who is the head of the family during Avurudu?",
+        options: ["Father", "Uncle", "Brother"],
+        correct: "Father"
+      },
+      {
+        question: "What does Avurudu symbolize?",
+        options: ["Festival", "Journey", "Victory"],
+        correct: "Festival"
+      }
+    ];
+
+    let currentQuestion = 0;
+    let score = 0;
+
+    function showMainMenu() {
+      document.getElementById("quiz-container").innerHTML = `
+        <h1>🧠 Avurudu Quiz</h1>
+        <button onclick="startQuiz()">Start Quiz</button>
+      `;
+    }
+
+    function startQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      displayQuestion();
+    }
+
+    function displayQuestion() {
+      const q = questions[currentQuestion];
+      document.getElementById("quiz-container").innerHTML = `
+        <h1>🧠 Avurudu Quiz</h1>
+        <div class="question">${q.question}</div>
+        <div class="options">
+          <button id="option1" onclick="checkAnswer('option1')">${q.options[0]}</button>
+          <button id="option2" onclick="checkAnswer('option2')">${q.options[1]}</button>
+          <button id="option3" onclick="checkAnswer('option3')">${q.options[2]}</button>
+        </div>
+        <div id="result"></div>
+        <div id="score"></div>
+      `;
+    }
+
+    function checkAnswer(selectedId) {
+      const selectedButton = document.getElementById(selectedId);
+      const selectedAnswer = selectedButton.innerText;
+      const correctAnswer = questions[currentQuestion].correct;
+
+      if (selectedAnswer === correctAnswer) {
+        score++;
+        document.getElementById("result").innerHTML = "Correct! 🎉";
+      } else {
+        document.getElementById("result").innerHTML = "Wrong answer. Try again!";
+      }
+
+      currentQuestion++;
+      if (currentQuestion < questions.length) {
+        setTimeout(() => {
+          document.getElementById("result").innerHTML = '';
+          displayQuestion();
+        }, 1000);
+      } else {
+        setTimeout(() => {
+          document.getElementById("result").innerHTML = '';
+          document.getElementById("score").innerHTML = `Your score: ${score} / ${questions.length}`;
+          document.getElementById("quiz-container").innerHTML += `<button onclick="showMainMenu()">Back to Main Menu</button>`;
+        }, 1000);
+      }
+    }
+
+    // Show main menu on load
+    showMainMenu();
+  </script>
+
+</body>
+</html>
